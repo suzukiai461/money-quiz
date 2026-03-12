@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お金の勉強クイズ - 自立への第一歩</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app">
+        <h1><span class="money-icon">💰</span> お金の勉強クイズ</h1>
+
+        <!-- スタート画面 -->
+        <div id="start-screen" class="screen active">
+            <p>中学生の皆さんが将将来、自立して生活するために必要な「お金の知識」を学びましょう。</p>
+            <p>30問の中からランダムに5問出題されます。</p>
+            <button id="start-btn" class="btn">クイズを始める！</button>
+        </div>
+
+        <!-- クイズ画面 -->
+        <div id="quiz-screen" class="screen">
+            <div class="progress-bar">
+                <div id="progress-fill"></div>
+            </div>
+            <p id="question-number"></p>
+            <h2 id="question-text" style="font-size: 1.2rem; margin: 20px 0;"></h2>
+            <div id="choices-container">
+                <!-- 選択肢がここに入ります -->
+            </div>
+            <div id="feedback-container" class="explanation" style="display: none;">
+                <p id="result-text" style="font-weight: bold; margin-bottom: 8px;"></p>
+                <p id="explanation-text"></p>
+                <button id="next-btn" class="btn">次の問題へ</button>
+            </div>
+        </div>
+
+        <!-- リザルト画面 -->
+        <div id="result-screen" class="screen">
+            <h2>お疲れ様でした！</h2>
+            <div class="score-display">
+                <span id="score">0</span> / 5
+            </div>
+            <p id="result-message"></p>
+            <button id="restart-btn" class="btn">もう一度挑戦する</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
