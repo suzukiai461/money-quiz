@@ -43,7 +43,25 @@
                 <span id="score">0</span> / 5
             </div>
             <p id="result-message"></p>
+
+            <!-- キーワード表示エリア (JavaScriptで5問正解時のみ表示制御) -->
+            <div id="keyword-container" style="display: none; margin: 20px 0; padding: 15px; border: 2px dashed #f3a683; border-radius: 8px; background-color: #fff9f0;">
+                <p style="font-weight: bold; color: #f3a683; margin-bottom: 5px;">進路クエスト キーワード</p>
+                <div style="font-size: 2.5rem; font-weight: bold; color: #e17055;">る</div>
+            </div>
+
+            <button id="view-all-btn" class="btn" style="display: none; background-color: #74b9ff; border-color: #74b9ff; color: white;">すべての問題を閲覧する</button>
             <button id="restart-btn" class="btn">もう一度挑戦する</button>
+        </div>
+
+        <!-- すべての問題一覧画面 -->
+        <div id="all-questions-screen" class="screen">
+            <h2>全問題一覧</h2>
+            <div id="all-questions-list" style="max-height: 400px; overflow-y: auto; text-align: left; margin: 20px 0; padding-right: 10px;">
+                <!-- JavaScriptでここにリストを生成します -->
+            </div>
+            <button id="back-to-result-btn" class="btn">結果画面に戻る</button>
+            <button id="back-to-top-btn" class="btn" style="background-color: #dfe6e9; border-color: #dfe6e9; color: #2d3436;">トップ画面に戻る</button>
         </div>
     </div>
     <script src="script.js"></script>

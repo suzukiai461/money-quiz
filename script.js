@@ -188,6 +188,7 @@ let score = 0;
 const startScreen = document.getElementById('start-screen');
 const quizScreen = document.getElementById('quiz-screen');
 const resultScreen = document.getElementById('result-screen');
+const allQuestionsScreen = document.getElementById('all-questions-screen'); // 追加: 一覧画面
 const questionText = document.getElementById('question-text');
 const choicesContainer = document.getElementById('choices-container');
 const feedbackContainer = document.getElementById('feedback-container');
@@ -196,9 +197,18 @@ const explanationText = document.getElementById('explanation-text');
 const nextBtn = document.getElementById('next-btn');
 const questionNumber = document.getElementById('question-number');
 const progressFill = document.getElementById('progress-fill');
+const keywordContainer = document.getElementById('keyword-container'); // 追加: キーワードエリア
+const viewAllBtn = document.getElementById('view-all-btn'); // 追加: 一覧ボタン
+const allQuestionsList = document.getElementById('all-questions-list'); // 追加: 一覧表示エリア
 
 document.getElementById('start-btn').addEventListener('click', startQuiz);
 document.getElementById('restart-btn').addEventListener('click', startQuiz);
+document.getElementById('back-to-result-btn').addEventListener('click', showResult); // 追加: 結果へ戻る
+document.getElementById('back-to-top-btn').addEventListener('click', () => { // 追加: トップへ戻る
+    allQuestionsScreen.classList.remove('active');
+    startScreen.classList.add('active');
+});
+viewAllBtn.addEventListener('click', showAllQuestions); // 追加: 一覧表示ボタンのイベント
 nextBtn.addEventListener('click', nextQuestion);
 
 function startQuiz() {
@@ -268,18 +278,49 @@ function nextQuestion() {
 
 function showResult() {
     quizScreen.classList.remove('active');
+    allQuestionsScreen.classList.remove('active'); // 追加: 念のため一覧画面も非表示に
     resultScreen.classList.add('active');
 
     document.getElementById('score').innerText = score;
     const msg = document.getElementById('result-message');
-
+    
+    // キーワード表示と全問題閲覧ボタンの制御
     if (score === 5) {
         msg.innerText = "完璧です！将来のお金マスターになれるかもしれませんね。";
-    } else if (score >= 4) {
-        msg.innerText = "素晴らしい！基本的な知識がしっかり身についています。";
-    } else if (score >= 2) {
-        msg.innerText = "まずまずです。間違えたところを復習して、さらに理解を深めましょう。";
+        keywordContainer.style.display = 'block'; // 5問正解ならキーワード表示
+        viewAllBtn.style.display = 'block'; // 全問題閲覧ボタンも表示
     } else {
-        msg.innerText = "これから少しずつ学んでいきましょう。自立に向けて一歩ずつ進みましょう！";
+        keywordContainer.style.display = 'none'; // それ以外は隠す
+        viewAllBtn.style.display = 'none'; // 全問題閲覧ボタンも隠す
+        if (score >= 4) {
+            msg.innerText = "素晴らしい！基本的な知識がしっかり身についています。";
+        } else if (score >= 2) {
+            msg.innerText = "まずまずです。間違えたところを復習して、さらに理解を深めましょう。";
+        } else {
+            msg.innerText = "これから少しずつ学んでいきましょう。自立に向けて一歩ずつ進みましょう！";
+        }
+    }
+}
+
+// 追加: 全問題一覧を表示する関数
+function showAllQuestions() {
+    resultScreen.classList.remove('active');
+    allQuestionsScreen.classList.add('active');
+    
+    // まだリストが作成されていなければ作成する
+    if (allQuestionsList.innerHTML.trim() === '') {
+        let listHTML = '';
+        questions.forEach((q, index) => {
+            const correctAnswerText = q.choices[q.correct];
+            listHTML += `
+                <div class="question-item">
+                    <div class="question-title">第 ${index + 1} 問</div>
+                    <div class="question-text">${q.q}</div>
+                    <div class="question-answer">正解：${correctAnswerText}</div>
+                    <div class="question-desc">${q.desc}</div>
+                </div>
+            `;
+        });
+        allQuestionsList.innerHTML = listHTML;
     }
 }
