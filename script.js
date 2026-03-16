@@ -184,6 +184,7 @@ const questions = [
 let currentQuestions = [];
 let currentQuestionIndex = 0;
 let score = 0;
+let availableQuestions = []; // 追加: まんべんなく出題するためのプール
 
 const startScreen = document.getElementById('start-screen');
 const quizScreen = document.getElementById('quiz-screen');
@@ -214,8 +215,18 @@ nextBtn.addEventListener('click', nextQuestion);
 function startQuiz() {
     score = 0;
     currentQuestionIndex = 0;
-    // 30問からランダムに5問選ぶ
-    currentQuestions = [...questions].sort(() => Math.random() - 0.5).slice(0, 5);
+    
+    // 出題可能な問題が5問未満になったら、全30問をリセットしてシャッフルする
+    if (availableQuestions.length < 5) {
+        availableQuestions = [...questions];
+        for (let i = availableQuestions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [availableQuestions[i], availableQuestions[j]] = [availableQuestions[j], availableQuestions[i]];
+        }
+    }
+    
+    // 配列の先頭から5問を取り出して今回の問題にする
+    currentQuestions = availableQuestions.splice(0, 5);
 
     startScreen.classList.remove('active');
     resultScreen.classList.remove('active');
@@ -307,8 +318,8 @@ function showAllQuestions() {
     resultScreen.classList.remove('active');
     allQuestionsScreen.classList.add('active');
     
-    // まだリストが作成されていなければ作成する
-    if (allQuestionsList.innerHTML.trim() === '') {
+    // HTML内にコメントがあるため、要素が空かどうかは子要素(children)の数で判定する
+    if (allQuestionsList.children.length === 0) {
         let listHTML = '';
         questions.forEach((q, index) => {
             const correctAnswerText = q.choices[q.correct];
